@@ -20,10 +20,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "TV Shows", path: "/browse" },
-    { name: "Trending", path: "/trending" },
-    { name: "My List", path: "/my-list" },
+    { name: "Home", path: "/", enabled: true },
+    { name: "TV Shows", path: "/browse", enabled: false },
+    { name: "Trending", path: "/trending", enabled: false },
+    { name: "My List", path: "/my-list", enabled: false },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -47,20 +47,29 @@ const Navbar = () => {
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={cn(
-                    "text-sm font-medium transition-colors duration-200",
-                    isActive(link.path)
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) =>
+                link.enabled ? (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={cn(
+                      "text-sm font-medium transition-colors duration-200",
+                      isActive(link.path)
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                ) : (
+                  <span
+                    key={link.path}
+                    className="text-sm font-medium text-muted-foreground/50 cursor-not-allowed"
+                  >
+                    {link.name}
+                  </span>
+                )
+              )}
             </div>
 
             <div className="flex items-center gap-4">
@@ -94,21 +103,30 @@ const Navbar = () => {
           )}
         >
           <div className="px-4 sm:px-6 py-4 flex flex-col gap-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  "text-base font-medium py-2 transition-colors duration-200",
-                  isActive(link.path)
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.enabled ? (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "text-base font-medium py-2 transition-colors duration-200",
+                    isActive(link.path)
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <span
+                  key={link.path}
+                  className="text-base font-medium py-2 text-muted-foreground/50 cursor-not-allowed"
+                >
+                  {link.name}
+                </span>
+              )
+            )}
           </div>
         </div>
       </nav>
